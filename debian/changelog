@@ -1,0 +1,5 @@
+wazo-deployd-client (0.1) xivo-dev; urgency=low
+
+  * Initial release.
+
+ -- Wazo Maintainers <dev@wazo.community>  Mon, 17 Jul 2017 18:33:44 +0200
