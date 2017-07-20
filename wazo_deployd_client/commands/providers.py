@@ -69,5 +69,6 @@ class ProvidersCommand(RESTCommand):
     def _providers_one_url(self, tenant_uuid, provider_uuid):
         return '{base_url}/{tenant_uuid}/providers/{provider_uuid}'.format(
             base_url=self._providers_all_url(tenant_uuid),
+            tenant_uuid=tenant_uuid,
             provider_uuid=provider_uuid,
         )
