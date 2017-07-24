@@ -32,7 +32,7 @@ class ProvidersCommand(RESTCommand):
 
         return response.json()
 
-    def get_providers_for_tenant(self, tenant_uuid, provider_uuid):
+    def get_provider_for_tenant(self, tenant_uuid, provider_uuid):
         response = self.session.get(
             self._providers_one_url(tenant_uuid, provider_uuid),
             headers=self._headers,
@@ -66,8 +66,7 @@ class ProvidersCommand(RESTCommand):
         )
 
     def _providers_one_url(self, tenant_uuid, provider_uuid):
-        return '{base_url}/{tenant_uuid}/providers/{provider_uuid}'.format(
+        return '{base_url}/{provider_uuid}'.format(
             base_url=self._providers_all_url(tenant_uuid),
-            tenant_uuid=tenant_uuid,
             provider_uuid=provider_uuid,
         )
