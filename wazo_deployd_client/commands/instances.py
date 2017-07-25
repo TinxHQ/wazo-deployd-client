@@ -64,8 +64,10 @@ class InstancesCommand(RESTCommand):
             data=json.dumps(instance_data),
             headers=self._headers,
         )
-        if response.status_code != 204:
+        if response.status_code != 200:
             self.raise_from_response(response)
+
+        return response.json()
 
     def _delete_instance(self, tenant_uuid, instance_uuid, provider_uuid=None):
         if provider_uuid:
