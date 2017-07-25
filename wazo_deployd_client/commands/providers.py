@@ -48,8 +48,10 @@ class ProvidersCommand(RESTCommand):
             data=json.dumps(provider_data),
             headers=self._headers,
         )
-        if response.status_code != 204:
+        if response.status_code != 200:
             self.raise_from_response(response)
+
+        return response.json()
 
     def delete_provider_for_tenant(self, tenant_uuid, provider_uuid):
         response = self.session.delete(
