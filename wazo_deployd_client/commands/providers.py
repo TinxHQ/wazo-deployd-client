@@ -9,7 +9,7 @@ from wazo_deployd_client.command import DeploydCommand
 class ProvidersCommand(DeploydCommand):
 
     resource = 'tenants'
-    _headers = {'Accept': 'application/json'}
+    _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
     def list_providers_for_tenant(self, tenant_uuid):
         response = self.session.get(
