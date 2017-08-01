@@ -3,10 +3,10 @@
 
 import json
 
-from xivo_lib_rest_client import RESTCommand
+from wazo_deployd_client.command import DeploydCommand
 
 
-class ProvidersCommand(RESTCommand):
+class ProvidersCommand(DeploydCommand):
 
     resource = 'tenants'
     _headers = {'Accept': 'application/json'}
