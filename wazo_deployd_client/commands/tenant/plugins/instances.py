@@ -30,12 +30,7 @@ class InstancesCommand(DeploydCommand):
 
         return response.json()
 
-    def _create_instance(self, instance_data, provider_uuid=None):
-        if provider_uuid:
-            url = self._provider_instances_all_url(provider_uuid)
-        else:
-            url = self._instances_all_url()
-
+    def _create_instance(self, url, instance_data):
         response = self.session.post(
             url,
             data=json.dumps(instance_data),
@@ -47,10 +42,12 @@ class InstancesCommand(DeploydCommand):
         return response.json()
 
     def register(self, instance_data):
-        return self._create_instance(instance_data)
+        url = self._instances_all_url()
+        return self._create_instance(url, instance_data)
 
     def create(self, provider_uuid, instance_data):
-        return self._create_instance(instance_data, provider_uuid=provider_uuid)
+        url = self._provider_instances_all_url(provider_uuid)
+        return self._create_instance(url, instance_data)
 
     def get(self, instance_uuid):
         response = self.session.get(
@@ -73,27 +70,21 @@ class InstancesCommand(DeploydCommand):
 
         return response.json()
 
-    def _delete_instance(self, instance_uuid, provider_uuid=None):
-        if provider_uuid:
-            url = self._provider_instances_one_url(
-                instance_uuid,
-                provider_uuid,
-            )
-        else:
-            url = self._instances_one_url(instance_uuid)
-
-        response = self.session.delete(
-            url,
-            headers=self._headers,
-        )
+    def _delete_instance(self, url):
+        response = self.session.delete(url, headers=self._headers)
         if response.status_code != 204:
             self.raise_from_response(response)
 
     def unregister(self, instance_uuid):
-        return self._delete_instance(instance_uuid)
+        url = self._instances_one_url(instance_uuid)
+        return self._delete_instance(url)
 
     def delete(self, provider_uuid, instance_uuid):
-        return self._delete_instance(instance_uuid, provider_uuid=provider_uuid)
+        url = self._provider_instances_one_url(
+            instance_uuid,
+            provider_uuid,
+        )
+        return self._delete_instance(url)
 
     def _instances_all_url(self):
         return '{base_url}/{tenant_uuid}/instances'.format(
