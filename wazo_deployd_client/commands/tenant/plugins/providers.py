@@ -11,6 +11,10 @@ class ProvidersCommand(DeploydCommand):
     resource = 'tenants'
     _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
+    def __init__(self, client, tenant_uuid):
+        self.tenant_uuid = tenant_uuid
+        super().__init__(client)
+
     def list(self):
         response = self.session.get(
             self._providers_all_url(),

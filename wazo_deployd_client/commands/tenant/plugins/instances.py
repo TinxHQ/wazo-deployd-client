@@ -11,6 +11,10 @@ class InstancesCommand(DeploydCommand):
     resource = 'tenants'
     _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
+    def __init__(self, client, tenant_uuid):
+        self.tenant_uuid = tenant_uuid
+        super().__init__(client)
+
     def list(self, provider_uuid=None):
         if provider_uuid:
             url = self._provider_instances_all_url(provider_uuid)
