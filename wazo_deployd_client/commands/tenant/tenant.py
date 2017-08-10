@@ -26,19 +26,17 @@ class Tenant(object):
     def __getattribute__(self, name):
         attribute = super().__getattribute__(name)
         if name in plugin_names:
-            attribute.tenant_uuid = self.tenant_uuid
+            return attribute(self._client, self.tenant_uuid)
         return attribute
 
     def _load_plugins(self):
 
         def set_extension_instance_as_attribute(extension_):
-            setattr(self, extension_.name, extension_.obj)
+            setattr(self, extension_.name, extension_.plugin)
             plugin_names.add(extension_.name)
 
         extension_manager = extension.ExtensionManager(
             self.namespace,
-            invoke_on_load=True,
-            invoke_args=(self._client,),
         )
         try:
             extension_manager.map(set_extension_instance_as_attribute)
