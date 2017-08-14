@@ -18,6 +18,8 @@ class DeploydError(HTTPError):
             self.error_id = body['error_id']
             self.details = body['details']
             self.timestamp = body['timestamp']
+            if body.get('resource', None):
+                self.resource = body['resource']
         except KeyError:
             raise InvalidDeploydError()
 
