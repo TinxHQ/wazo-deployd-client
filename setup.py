@@ -18,8 +18,11 @@ setup(
     entry_points={
         'wazo_deployd_client.commands': [
             'config = wazo_deployd_client.commands.config:ConfigCommand',
-            'providers = wazo_deployd_client.commands.providers:ProvidersCommand',
-            'instances = wazo_deployd_client.commands.instances:InstancesCommand',
+            'tenant = wazo_deployd_client.commands.tenant:Tenant',
+        ],
+        'wazo_deployd_client.commands.tenant.plugins': [
+            'providers = wazo_deployd_client.commands.tenant.plugins.providers:ProvidersCommand',
+            'instances = wazo_deployd_client.commands.tenant.plugins.instances:InstancesCommand',
         ],
     }
 )
