@@ -6,14 +6,40 @@ import json
 from wazo_deployd_client.command import DeploydCommand
 
 
+class PlatformsSubcommand(DeploydCommand):
+
+    resource = 'tenants'
+    _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+
+    def __init__(self, client, base_url):
+        super().__init__(client)
+        self.base_url = base_url
+
+    def list(self):
+        response = self.session.get(
+            self._providers_platforms_url(),
+            headers=self._headers,
+        )
+        if response.status_code != 200:
+            self.raise_from_response(response)
+
+        return response.json()
+
+    def _providers_platforms_url(self):
+        return '{base_url}/platforms'.format(
+            base_url=self.base_url,
+        )
+
+
 class ProvidersCommand(DeploydCommand):
 
     resource = 'tenants'
     _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
     def __init__(self, client, tenant_uuid):
-        self.tenant_uuid = tenant_uuid
         super().__init__(client)
+        self.tenant_uuid = tenant_uuid
+        self.platforms = PlatformsSubcommand(client, self._providers_all_url())
 
     def list(self):
         response = self.session.get(
