@@ -78,6 +78,12 @@ client.tenant(tenant_uuid).instances.register(instance_data)
 client.tenant(tenant_uuid).instances.get(instance_uuid)
 ```
 
+### Get an instance wazo
+
+```python
+client.tenant(tenant_uuid).instances.get_wazo(instance_uuid)
+```
+
 ### Update an instance
 
 ```python

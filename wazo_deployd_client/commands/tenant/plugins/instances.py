@@ -59,6 +59,16 @@ class InstancesCommand(DeploydCommand):
 
         return response.json()
 
+    def get_wazo(self, instance_uuid):
+        response = self.session.get(
+            self._instances_wazo_url(instance_uuid),
+            headers=self._headers,
+        )
+        if response.status_code != 200:
+            self.raise_from_response(response)
+
+        return response.json()
+
     def update(self, instance_uuid, instance_data):
         response = self.session.put(
             self._instances_one_url(instance_uuid),
@@ -96,6 +106,11 @@ class InstancesCommand(DeploydCommand):
         return '{base_url}/{instance_uuid}'.format(
             base_url=self._instances_all_url(),
             instance_uuid=instance_uuid,
+        )
+
+    def _instances_wazo_url(self, instance_uuid):
+        return '{base_url}/wazo'.format(
+            base_url=self._instances_one_url(instance_uuid),
         )
 
     def _provider_instances_all_url(self, provider_uuid):
