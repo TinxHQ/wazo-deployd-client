@@ -42,8 +42,11 @@ class ProvidersCommand(DeploydCommand):
         self.platforms = PlatformsSubcommand(client, self._providers_all_url())
 
     def list(self):
+        url = (self._providers_all_url()
+               if self.tenant_uuid
+               else self._providers_all_no_tenant_url())
         response = self.session.get(
-            self._providers_all_url(),
+            url,
             headers=self._headers,
         )
         if response.status_code != 200:
@@ -96,6 +99,9 @@ class ProvidersCommand(DeploydCommand):
             base_url=self.base_url,
             tenant_uuid=self.tenant_uuid,
         )
+
+    def _providers_all_no_tenant_url(self):
+        return '{base_url}/providers'.format(base_url=self._client.url())
 
     def _providers_one_url(self, provider_uuid):
         return '{base_url}/{provider_uuid}'.format(
