@@ -69,6 +69,15 @@ class InstancesCommand(DeploydCommand):
 
         return response.json()
 
+    def wizard(self, instance_uuid, wizard_data):
+        response = self.session.post(
+            self._instances_wizard_url(instance_uuid),
+            data=json.dumps(wizard_data),
+            headers=self._headers,
+        )
+        if response.status_code != 204:
+            self.raise_from_response(response)
+
     def update(self, instance_uuid, instance_data):
         response = self.session.put(
             self._instances_one_url(instance_uuid),
@@ -111,6 +120,11 @@ class InstancesCommand(DeploydCommand):
     def _instances_wazo_url(self, instance_uuid):
         return '{base_url}/wazo'.format(
             base_url=self._instances_one_url(instance_uuid),
+        )
+
+    def _instances_wizard_url(self, instance_uuid):
+        return '{base_url}/wizard'.format(
+            base_url=self._instances_wazo_url(instance_uuid),
         )
 
     def _provider_instances_all_url(self, provider_uuid):

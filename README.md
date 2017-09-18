@@ -84,6 +84,12 @@ client.tenant(tenant_uuid).instances.get(instance_uuid)
 client.tenant(tenant_uuid).instances.get_wazo(instance_uuid)
 ```
 
+### Pass wizard for an instance
+
+```python
+client.tenant(tenant_uuid).instances.wizard(instance_uuid, wizard_data)
+```
+
 ### Update an instance
 
 ```python
