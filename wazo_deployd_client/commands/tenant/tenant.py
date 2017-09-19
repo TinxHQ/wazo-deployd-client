@@ -19,7 +19,7 @@ class Tenant(object):
         self._client = client
         self._load_plugins()
 
-    def __call__(self, tenant_uuid):
+    def __call__(self, tenant_uuid=None):
         self.tenant_uuid = tenant_uuid
         return self
 
