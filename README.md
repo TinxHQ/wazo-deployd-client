@@ -25,6 +25,12 @@ client.config()
 client.tenant(tenant_uuid).providers.list()
 ```
 
+### List platforms
+
+```python
+client.tenant(tenant_uuid).providers.platforms.list()
+```
+
 ### Create a provider
 
 ```python
