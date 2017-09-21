@@ -39,7 +39,9 @@ class ProvidersCommand(DeploydCommand):
     def __init__(self, client, tenant_uuid):
         super().__init__(client)
         self.tenant_uuid = tenant_uuid
-        self.platforms = PlatformsSubcommand(client, self._providers_all_url())
+        self.platforms = PlatformsSubcommand(
+            client, self._providers_all_no_tenant_url(),
+        )
 
     def list(self):
         url = (self._providers_all_url()
