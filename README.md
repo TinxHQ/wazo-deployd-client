@@ -31,7 +31,7 @@ client.tenant().providers.list()
 ### List platforms
 
 ```python
-client.tenant(tenant_uuid).providers.platforms.list()
+client.tenant().providers.platforms.list()
 ```
 
 ### Create a provider
