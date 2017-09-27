@@ -51,6 +51,24 @@ class InstancesCommand(DeploydCommand):
         url = self._provider_instances_all_url(provider_uuid)
         return self._create_instance(url, instance_data)
 
+    def associate_tenant(self, instance_uuid, tenant_uuid):
+        url = self._tenant_association_url(instance_uuid, tenant_uuid)
+        response = self.session.put(
+            url,
+            headers=self._headers,
+        )
+        if response.status_code != 204:
+            self.raise_from_response(response)
+
+    def dissociate_tenant(self, instance_uuid, tenant_uuid):
+        url = self._tenant_association_url(instance_uuid, tenant_uuid)
+        response = self.session.delete(
+            url,
+            headers=self._headers,
+        )
+        if response.status_code != 204:
+            self.raise_from_response(response)
+
     def get(self, instance_uuid):
         response = self.session.get(
             self._instances_one_url(instance_uuid),
@@ -143,4 +161,11 @@ class InstancesCommand(DeploydCommand):
         return '{base_url}/{instance_uuid}'.format(
             base_url=self._provider_instances_all_url(provider_uuid),
             instance_uuid=instance_uuid,
+        )
+
+    def _tenant_association_url(self, instance_uuid, tenant_uuid):
+        return '{base_url}/{instance_uuid}/tenants/{tenant_uuid}'.format(
+            base_url=self._instances_all_no_tenant_url(),
+            instance_uuid=instance_uuid,
+            tenant_uuid=tenant_uuid,
         )
