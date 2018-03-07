@@ -1,11 +1,10 @@
 # Copyright 2017 The Wazo Authors  (see AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0+
 
+from wazo_deployd_client.command import DeploydCommand
 
-from xivo_lib_rest_client import RESTCommand
 
-
-class ConfigCommand(RESTCommand):
+class ConfigCommand(DeploydCommand):
 
     resource = 'config'
     _headers = {'Accept': 'application/json'}
