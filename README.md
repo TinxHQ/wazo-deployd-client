@@ -14,7 +14,7 @@ client = Client('localhost', verify_certificate=False)
 ## Config
 
 ```python
-client.config()
+client.config.get()
 ```
 
 ## Providers
