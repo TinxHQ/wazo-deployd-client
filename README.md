@@ -22,39 +22,41 @@ client.config.get()
 ### List providers
 
 ```python
+client.providers.list()
 client.tenant(tenant_uuid).providers.list()
-
-# List without `tenant_uuid`
-client.tenant().providers.list()
 ```
 
 ### List platforms
 
 ```python
-client.tenant().providers.platforms.list()
+client.providers.platforms.list()
 ```
 
 ### Create a provider
 
 ```python
+client.providers.create(provider_data)
 client.tenant(tenant_uuid).providers.create(provider_data)
 ```
 
 ### Get a provider
 
 ```python
+client.providers.get(provider_uuid)
 client.tenant(tenant_uuid).providers.get(provider_uuid)
 ```
 
 ### Update a provider
 
 ```python
+client.providers.update(provider_uuid, provider_data)
 client.tenant(tenant_uuid).providers.update(provider_uuid, provider_data)
 ```
 
 ### Delete a provider
 
 ```python
+client.providers.delete(provider_uuid)
 client.tenant(tenant_uuid).providers.delete(provider_uuid)
 ```
 
@@ -63,60 +65,67 @@ client.tenant(tenant_uuid).providers.delete(provider_uuid)
 ### List instances
 
 ```python
+client.instances.list()
 client.tenant(tenant_uuid).instances.list()
 
 # List by provider
+client.instances.list(provider_uuid=provider_uuid)
 client.tenant(tenant_uuid).instances.list(provider_uuid=provider_uuid)
-
-# List without `tenant_uuid`
-client.tenant().instances.list()
 ```
 
 ### Create an instance
 
 ```python
+client.instances.create(provider_uuid, instance_data)
 client.tenant(tenant_uuid).instances.create(provider_uuid, instance_data)
 ```
 
 ### Register an instance
 
 ```python
+client.instances.register(instance_data)
 client.tenant(tenant_uuid).instances.register(instance_data)
 ```
 
 ### Get an instance
 
 ```python
+client.instances.get(instance_uuid)
 client.tenant(tenant_uuid).instances.get(instance_uuid)
 ```
 
 ### Get an instance wazo
 
 ```python
+client.instances.get_wazo(instance_uuid)
 client.tenant(tenant_uuid).instances.get_wazo(instance_uuid)
 ```
 
 ### Pass wizard for an instance
 
 ```python
+client.instances.wizard(instance_uuid, wizard_data)
 client.tenant(tenant_uuid).instances.wizard(instance_uuid, wizard_data)
 ```
 
 ### Update an instance
 
 ```python
+client.instances.update(instance_uuid, instance_data)
 client.tenant(tenant_uuid).instances.update(instance_uuid, instance_data)
 ```
 
 ### Delete an instance
 
 ```python
+client.instances.delete(provider_uuid, instance_uuid)
 client.tenant(tenant_uuid).instances.delete(provider_uuid, instance_uuid)
 ```
 
 ### Unregister an instance
 
 ```python
+client.instances.unregister(instance_uuid)
 client.tenant(tenant_uuid).instances.unregister(instance_uuid)
 ```
 
