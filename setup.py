@@ -19,6 +19,9 @@ setup(
         'wazo_deployd_client.commands': [
             'config = wazo_deployd_client.commands.config:ConfigCommand',
             'tenant = wazo_deployd_client.commands.tenant:Tenant',
+            'providers = wazo_deployd_client.commands.tenant.plugins.providers:ProvidersCommand',
+            'instances = wazo_deployd_client.commands.tenant.plugins.instances:InstancesCommand',
+        ],
         'wazo_deployd_client.commands.tenant.plugins': [
             'providers = wazo_deployd_client.commands.tenant.plugins.providers:TenantAwareProvidersCommand',
             'instances = wazo_deployd_client.commands.tenant.plugins.instances:TenantAwareInstancesCommand',
