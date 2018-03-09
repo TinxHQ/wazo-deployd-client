@@ -8,7 +8,7 @@ from wazo_deployd_client.command import DeploydCommand
 
 class PlatformsSubcommand(DeploydCommand):
 
-    resource = 'tenants'
+    resource = 'platforms'
     _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
     def __init__(self, client, base_url):
@@ -33,14 +33,13 @@ class PlatformsSubcommand(DeploydCommand):
 
 class ProvidersCommand(DeploydCommand):
 
-    resource = 'tenants'
+    resource = 'providers'
     _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
-    def __init__(self, client, tenant_uuid):
+    def __init__(self, client):
         super().__init__(client)
-        self.tenant_uuid = tenant_uuid
         self.platforms = PlatformsSubcommand(
-            client, self._providers_all_no_tenant_url(),
+            client, self.base_url,
         )
 
     def list(self):
@@ -95,16 +94,18 @@ class ProvidersCommand(DeploydCommand):
             self.raise_from_response(response)
 
     def _providers_all_url(self):
-        return '{base_url}/{tenant_uuid}/providers'.format(
-            base_url=self.base_url,
-            tenant_uuid=self.tenant_uuid,
-        )
-
-    def _providers_all_no_tenant_url(self):
-        return '{base_url}/providers'.format(base_url=self._client.url())
+        return self.base_url
 
     def _providers_one_url(self, provider_uuid):
         return '{base_url}/{provider_uuid}'.format(
             base_url=self._providers_all_url(),
             provider_uuid=provider_uuid,
         )
+
+
+class TenantAwareProvidersCommand(ProvidersCommand):
+
+    def __init__(self, client, tenant_uuid):
+        super().__init__(client)
+        self._headers = super()._headers
+        self._headers['Wazo-Tenant'] = tenant_uuid

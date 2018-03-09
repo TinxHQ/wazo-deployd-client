@@ -8,11 +8,10 @@ from wazo_deployd_client.command import DeploydCommand
 
 class InstancesCommand(DeploydCommand):
 
-    resource = 'tenants'
+    resource = 'instances'
     _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
-    def __init__(self, client, tenant_uuid):
-        self.tenant_uuid = tenant_uuid
+    def __init__(self, client):
         super().__init__(client)
 
     def list(self, provider_uuid=None):
@@ -106,13 +105,7 @@ class InstancesCommand(DeploydCommand):
         return self._delete_instance(url)
 
     def _instances_all_url(self):
-        return '{base_url}/{tenant_uuid}/instances'.format(
-            base_url=self.base_url,
-            tenant_uuid=self.tenant_uuid,
-        )
-
-    def _instances_all_no_tenant_url(self):
-        return '{base_url}/instances'.format(base_url=self._client.url())
+        return self.base_url
 
     def _instances_one_url(self, instance_uuid):
         return '{base_url}/{instance_uuid}'.format(
@@ -131,14 +124,17 @@ class InstancesCommand(DeploydCommand):
         )
 
     def _provider_instances_all_url(self, provider_uuid):
-        return '{base_url}/{tenant_uuid}/providers/{provider_uuid}/instances'.format(
-            base_url=self.base_url,
-            tenant_uuid=self.tenant_uuid,
-            provider_uuid=provider_uuid,
-        )
+        return self._client.url('providers', provider_uuid, 'instances')
 
     def _provider_instances_one_url(self, instance_uuid, provider_uuid):
         return '{base_url}/{instance_uuid}'.format(
             base_url=self._provider_instances_all_url(provider_uuid),
             instance_uuid=instance_uuid,
         )
+
+
+class TenantAwareInstancesCommand(InstancesCommand):
+    def __init__(self, client, tenant_uuid):
+        super().__init__(client)
+        self._headers = super()._headers
+        self._headers['Wazo-Tenant'] = tenant_uuid

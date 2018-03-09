@@ -11,7 +11,7 @@ plugin_names = set()
 
 
 class Tenant(object):
-    """Proxy class for calling resources that starts with /tenants/<uuid>"""
+    """Proxy class for calling resources that need tenant infos"""
 
     namespace = 'wazo_deployd_client.commands.tenant.plugins'
 
