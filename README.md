@@ -23,9 +23,6 @@ client.config.get()
 
 ```python
 client.tenant(tenant_uuid).providers.list()
-
-# List without `tenant_uuid`
-client.tenant().providers.list()
 ```
 
 ### List platforms
@@ -67,9 +64,6 @@ client.tenant(tenant_uuid).instances.list()
 
 # List by provider
 client.tenant(tenant_uuid).instances.list(provider_uuid=provider_uuid)
-
-# List without `tenant_uuid`
-client.tenant().instances.list()
 ```
 
 ### Create an instance

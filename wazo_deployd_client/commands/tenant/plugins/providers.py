@@ -44,9 +44,7 @@ class ProvidersCommand(DeploydCommand):
         )
 
     def list(self):
-        url = (self._providers_all_url()
-               if self.tenant_uuid
-               else self._providers_all_no_tenant_url())
+        url = self._providers_all_url()
         response = self.session.get(
             url,
             headers=self._headers,

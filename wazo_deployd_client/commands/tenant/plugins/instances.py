@@ -18,8 +18,6 @@ class InstancesCommand(DeploydCommand):
     def list(self, provider_uuid=None):
         if provider_uuid:
             url = self._provider_instances_all_url(provider_uuid)
-        elif not self.tenant_uuid:
-            url = self._instances_all_no_tenant_url()
         else:
             url = self._instances_all_url()
 
