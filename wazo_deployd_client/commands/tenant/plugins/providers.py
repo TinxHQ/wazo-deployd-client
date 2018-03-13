@@ -42,11 +42,12 @@ class ProvidersCommand(DeploydCommand):
             client, self.base_url,
         )
 
-    def list(self):
+    def list(self, **params):
         url = self._providers_all_url()
         response = self.session.get(
             url,
             headers=self._headers,
+            params=params,
         )
         if response.status_code != 200:
             self.raise_from_response(response)

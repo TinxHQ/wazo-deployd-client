@@ -65,7 +65,7 @@ client.tenant(tenant_uuid).providers.delete(provider_uuid)
 ### List instances
 
 ```python
-client.instances.list()
+client.instances.list(limit=1, offset=1, order='name', direction='desc')
 client.tenant(tenant_uuid).instances.list()
 
 # List by provider

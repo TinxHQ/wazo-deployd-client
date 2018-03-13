@@ -14,7 +14,7 @@ class InstancesCommand(DeploydCommand):
     def __init__(self, client):
         super().__init__(client)
 
-    def list(self, provider_uuid=None):
+    def list(self, provider_uuid=None, **params):
         if provider_uuid:
             url = self._provider_instances_all_url(provider_uuid)
         else:
@@ -23,6 +23,7 @@ class InstancesCommand(DeploydCommand):
         response = self.session.get(
             url,
             headers=self._headers,
+            params=params,
         )
         if response.status_code != 200:
             self.raise_from_response(response)
