@@ -23,7 +23,7 @@ client.config.get()
 
 ```python
 client.providers.list()
-client.tenant(tenant_uuid).providers.list()
+client.tenant(tenant_uuid, other_tenant_uuid).providers.list()
 ```
 
 ### List platforms
@@ -66,7 +66,7 @@ client.tenant(tenant_uuid).providers.delete(provider_uuid)
 
 ```python
 client.instances.list(limit=1, offset=1, order='name', direction='desc')
-client.tenant(tenant_uuid).instances.list()
+client.tenant(tenant_uuid, other_tenant_uuid).instances.list()
 
 # List by provider
 client.instances.list(provider_uuid=provider_uuid)
