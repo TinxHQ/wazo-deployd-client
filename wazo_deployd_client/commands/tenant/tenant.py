@@ -19,14 +19,14 @@ class Tenant(object):
         self._client = client
         self._load_plugins()
 
-    def __call__(self, tenant_uuid=None):
-        self.tenant_uuid = tenant_uuid
+    def __call__(self, *tenant_uuids):
+        self.tenant_uuids = tenant_uuids
         return self
 
     def __getattribute__(self, name):
         attribute = super().__getattribute__(name)
         if name in plugin_names:
-            return attribute(self._client, self.tenant_uuid)
+            return attribute(self._client, self.tenant_uuids)
         return attribute
 
     def _load_plugins(self):
