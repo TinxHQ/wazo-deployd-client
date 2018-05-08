@@ -129,6 +129,34 @@ client.instances.unregister(instance_uuid)
 client.tenant(tenant_uuid).instances.unregister(instance_uuid)
 ```
 
+### Register a credential
+
+```python
+client.instances.create_credential(instance_uuid, credential_data)
+client.tenant(tenant_uuid).instances.create_credential(instance_uuid, credential_data)
+```
+
+### Get a credential
+
+```python
+client.instances.get_credential(instancr_uuid, credential_uuid)
+client.tenant(tenant_uuid).instances.get_credential(instance_uuid, credential_uuid)
+```
+
+### Update a credential
+
+```python
+client.instances.update_credential(instance_uuid, credential_uuid, credential_data)
+client.tenant(tenant_uuid).instances.update_credential(instance_uuid, credential_uuid, credential_data)
+```
+
+### Delete a credential
+
+```python
+client.instances.delete_credential(instance_uuid, credential_uuid)
+client.tenant(tenant_uuid).instances.delete_credential(instance_uuid, credential_uuid)
+```
+
 ## Debian package
 
 Follow the following steps to build a debian package for wazo-deployd-client manually.

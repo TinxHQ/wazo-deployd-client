@@ -105,6 +105,33 @@ class InstancesCommand(DeploydCommand):
         )
         return self._delete_instance(url)
 
+    def get_credential(self, instance_uuid, credential_uuid):
+        url = self._credentials_one_url(instance_uuid, credential_uuid)
+        response = self.session.get(url, headers=self._headers)
+        if response.status_code != 200:
+            self.raise_from_response(response)
+        return response.json()
+
+    def create_credential(self, instance_uuid, credential_data):
+        url = self._credentials_all_url(instance_uuid)
+        response = self.session.post(url, data=json.dumps(credential_data), headers=self._headers)
+        if response.status_code != 201:
+            self.raise_from_response(response)
+        return response.json()
+
+    def update_credential(self, instance_uuid, credential_uuid, credential_data):
+        url = self._credentials_one_url(instance_uuid, credential_uuid)
+        response = self.session.put(url, data=json.dumps(credential_data), headers=self._headers)
+        if response.status_code != 200:
+            self.raise_from_response(response)
+        return response.json()
+
+    def delete_credential(self, instance_uuid, credential_uuid):
+        url = self._credentials_one_url(instance_uuid, credential_uuid)
+        response = self.session.delete(url, headers=self._headers)
+        if response.status_code != 204:
+            self.raise_from_response(response)
+
     def _instances_all_url(self):
         return self.base_url
 
@@ -122,6 +149,19 @@ class InstancesCommand(DeploydCommand):
     def _instances_wizard_url(self, instance_uuid):
         return '{base_url}/wizard'.format(
             base_url=self._instances_wazo_url(instance_uuid),
+        )
+
+    def _credentials_one_url(self, instance_uuid, credential_uuid):
+        return '{base_url}/{instance_uuid}/credentials/{credential_uuid}'.format(
+            base_url=self._instances_all_url(),
+            instance_uuid=instance_uuid,
+            credential_uuid=credential_uuid,
+        )
+
+    def _credentials_all_url(self, instance_uuid):
+        return '{base_url}/{instance_uuid}/credentials'.format(
+            base_url=self._instances_all_url(),
+            instance_uuid=instance_uuid,
         )
 
     def _provider_instances_all_url(self, provider_uuid):
