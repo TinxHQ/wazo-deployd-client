@@ -177,4 +177,5 @@ class InstancesCommand(DeploydCommand):
 class TenantAwareInstancesCommand(InstancesCommand):
     def __init__(self, client, tenant_uuids):
         super().__init__(client)
+        self._headers = dict(self._headers)
         self._headers['Wazo-Tenant'] = ', '.join(tenant_uuids)
