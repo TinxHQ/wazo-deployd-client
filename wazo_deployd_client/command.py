@@ -1,7 +1,7 @@
-# Copyright 2017 The Wazo Authors  (see AUTHORS file)
+# Copyright 2017-2019 The Wazo Authors  (see AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from xivo_lib_rest_client.command import RESTCommand
+from wazo_lib_rest_client.command import RESTCommand
 
 from .exceptions import DeploydError
 from .exceptions import DeploydServiceUnavailable
