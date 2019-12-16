@@ -1,4 +1,4 @@
-# Copyright 2017 The Wazo Authors  (see AUTHORS file)
+# Copyright 2017-2019 The Wazo Authors  (see AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
@@ -9,7 +9,6 @@ from wazo_deployd_client.command import DeploydCommand
 class InstancesCommand(DeploydCommand):
 
     resource = 'instances'
-    _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
     def __init__(self, client):
         super().__init__(client)

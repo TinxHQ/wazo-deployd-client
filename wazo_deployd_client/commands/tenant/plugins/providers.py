@@ -9,7 +9,6 @@ from wazo_deployd_client.command import DeploydCommand
 class PlatformsSubcommand(DeploydCommand):
 
     resource = 'platforms'
-    _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
     def __init__(self, client, base_url):
         super().__init__(client)
@@ -34,7 +33,6 @@ class PlatformsSubcommand(DeploydCommand):
 class ProvidersCommand(DeploydCommand):
 
     resource = 'providers'
-    _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
     def __init__(self, client):
         super().__init__(client)

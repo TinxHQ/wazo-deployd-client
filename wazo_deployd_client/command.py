@@ -10,6 +10,8 @@ from .exceptions import InvalidDeploydError
 
 class DeploydCommand(RESTCommand):
 
+    _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+
     @staticmethod
     def raise_from_response(response):
         if response.status_code == 503:
