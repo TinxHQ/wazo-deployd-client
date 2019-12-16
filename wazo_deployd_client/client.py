@@ -19,3 +19,7 @@ class DeploydClient(BaseClient):
               port=port,
               version=version,
               **kwargs)
+
+    # this function replicates the tenant method of the BaseClient which is overriden by the tenant command
+    def configured_tenant(self):
+        return self._tenant_id or self._default_tenant_id

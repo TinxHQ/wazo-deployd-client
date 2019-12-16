@@ -1,4 +1,4 @@
-# Copyright 2017 The Wazo Authors  (see AUTHORS file)
+# Copyright 2017-2019 The Wazo Authors  (see AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
@@ -42,11 +42,16 @@ class ProvidersCommand(DeploydCommand):
             client, self.base_url,
         )
 
-    def list(self, **params):
+    def list(self, tenant_uuid=None, **params):
+        headers = dict(self._headers)
+        tenant_uuid = tenant_uuid or self._client.configured_tenant()
+        if tenant_uuid:
+            headers['Wazo-Tenant'] = tenant_uuid
+
         url = self._providers_all_url()
         response = self.session.get(
             url,
-            headers=self._headers,
+            headers=headers,
             params=params,
         )
         if response.status_code != 200:

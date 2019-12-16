@@ -1,4 +1,4 @@
-# Copyright 2017 The Wazo Authors  (see AUTHORS file)
+# Copyright 2017-2019 The Wazo Authors  (see AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import logging
@@ -19,6 +19,8 @@ class Tenant(object):
         self._client = client
         self._load_plugins()
 
+    # This function overrides the tenant() in the base class which should return the tenant_id or
+    # default_tenant_id.
     def __call__(self, *tenant_uuids):
         self.tenant_uuids = tenant_uuids
         return self
