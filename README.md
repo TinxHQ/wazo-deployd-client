@@ -22,8 +22,8 @@ client.config.get()
 ### List providers
 
 ```python
-client.providers.list()
-client.tenant(tenant_uuid, other_tenant_uuid).providers.list()
+client.providers.list(recurse=True)
+client.providers.list(tenant_uuid=<tenant_uuid>)
 ```
 
 ### Get informations provider
