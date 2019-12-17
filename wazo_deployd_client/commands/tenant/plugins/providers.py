@@ -40,18 +40,11 @@ class ProvidersCommand(DeploydCommand):
             client, self.base_url,
         )
 
-    def list(self, tenant_uuid=None, **params):
-        headers = dict(self._ro_headers)
-        tenant_uuid = tenant_uuid or self._client.configured_tenant()
-        if tenant_uuid:
-            headers['Wazo-Tenant'] = tenant_uuid
-
+    def list(self, **params):
         url = self._providers_all_url()
-        response = self.session.get(
-            url,
-            headers=headers,
-            params=params,
-        )
+        headers = self.ro_headers(**params)
+
+        response = self.session.get(url, headers=headers, params=params)
         if response.status_code != 200:
             self.raise_from_response(response)
 
