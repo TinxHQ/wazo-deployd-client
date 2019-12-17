@@ -9,6 +9,6 @@ class ConfigCommand(DeploydCommand):
     resource = 'config'
 
     def get(self):
-        r = self.session.get(self.base_url, headers=self._headers)
+        r = self.session.get(self.base_url, headers=self._ro_headers)
         self.raise_from_response(r)
         return r.json()

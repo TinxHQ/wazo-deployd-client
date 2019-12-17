@@ -10,7 +10,8 @@ from .exceptions import InvalidDeploydError
 
 class DeploydCommand(RESTCommand):
 
-    _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+    _rw_headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+    _ro_headers = {'Accept': 'application/json'}
 
     @staticmethod
     def raise_from_response(response):

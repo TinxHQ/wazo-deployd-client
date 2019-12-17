@@ -17,7 +17,7 @@ class PlatformsSubcommand(DeploydCommand):
     def list(self):
         response = self.session.get(
             self._providers_platforms_url(),
-            headers=self._headers,
+            headers=self._ro_headers,
         )
         if response.status_code != 200:
             self.raise_from_response(response)
@@ -41,7 +41,7 @@ class ProvidersCommand(DeploydCommand):
         )
 
     def list(self, tenant_uuid=None, **params):
-        headers = dict(self._headers)
+        headers = dict(self._ro_headers)
         tenant_uuid = tenant_uuid or self._client.configured_tenant()
         if tenant_uuid:
             headers['Wazo-Tenant'] = tenant_uuid
@@ -61,7 +61,7 @@ class ProvidersCommand(DeploydCommand):
         response = self.session.post(
             self._providers_all_url(),
             data=json.dumps(provider_data),
-            headers=self._headers,
+            headers=self._rw_headers,
         )
         if response.status_code != 201:
             self.raise_from_response(response)
@@ -71,7 +71,7 @@ class ProvidersCommand(DeploydCommand):
     def get(self, provider_uuid):
         response = self.session.get(
             self._providers_one_url(provider_uuid),
-            headers=self._headers,
+            headers=self._ro_headers,
         )
         if response.status_code != 200:
             self.raise_from_response(response)
@@ -82,7 +82,7 @@ class ProvidersCommand(DeploydCommand):
         response = self.session.put(
             self._providers_one_url(provider_uuid),
             data=json.dumps(provider_data),
-            headers=self._headers,
+            headers=self._rw_headers,
         )
         if response.status_code != 200:
             self.raise_from_response(response)
@@ -92,7 +92,7 @@ class ProvidersCommand(DeploydCommand):
     def delete(self, provider_uuid):
         response = self.session.delete(
             self._providers_one_url(provider_uuid),
-            headers=self._headers,
+            headers=self._ro_headers,
         )
         if response.status_code != 204:
             self.raise_from_response(response)
@@ -147,5 +147,8 @@ class TenantAwareProvidersCommand(ProvidersCommand):
 
     def __init__(self, client, tenant_uuids):
         super().__init__(client)
-        self._headers = dict(self._headers)
-        self._headers['Wazo-Tenant'] = ', '.join(tenant_uuids)
+        self._ro_headers = dict(self._ro_headers)
+        self._rw_headers = dict(self._rw_headers)
+        wazo_tenant = ', '.join(tenant_uuids)
+        self._ro_headers['Wazo-Tenant'] = wazo_tenant
+        self._rw_headers['Wazo-Tenant'] = wazo_tenant

@@ -21,7 +21,7 @@ class InstancesCommand(DeploydCommand):
 
         response = self.session.get(
             url,
-            headers=self._headers,
+            headers=self._ro_headers,
             params=params,
         )
         if response.status_code != 200:
@@ -33,7 +33,7 @@ class InstancesCommand(DeploydCommand):
         response = self.session.post(
             url,
             data=json.dumps(instance_data),
-            headers=self._headers,
+            headers=self._rw_headers,
         )
         if response.status_code != 201:
             self.raise_from_response(response)
@@ -51,7 +51,7 @@ class InstancesCommand(DeploydCommand):
     def get(self, instance_uuid):
         response = self.session.get(
             self._instances_one_url(instance_uuid),
-            headers=self._headers,
+            headers=self._ro_headers,
         )
         if response.status_code != 200:
             self.raise_from_response(response)
@@ -61,7 +61,7 @@ class InstancesCommand(DeploydCommand):
     def get_wazo(self, instance_uuid):
         response = self.session.get(
             self._instances_wazo_url(instance_uuid),
-            headers=self._headers,
+            headers=self._ro_headers,
         )
         if response.status_code != 200:
             self.raise_from_response(response)
@@ -72,7 +72,7 @@ class InstancesCommand(DeploydCommand):
         response = self.session.post(
             self._instances_wizard_url(instance_uuid),
             data=json.dumps(wizard_data),
-            headers=self._headers,
+            headers=self._rw_headers,
         )
         if response.status_code != 204:
             self.raise_from_response(response)
@@ -81,7 +81,7 @@ class InstancesCommand(DeploydCommand):
         response = self.session.put(
             self._instances_one_url(instance_uuid),
             data=json.dumps(instance_data),
-            headers=self._headers,
+            headers=self._rw_headers,
         )
         if response.status_code != 200:
             self.raise_from_response(response)
@@ -89,7 +89,7 @@ class InstancesCommand(DeploydCommand):
         return response.json()
 
     def _delete_instance(self, url):
-        response = self.session.delete(url, headers=self._headers)
+        response = self.session.delete(url, headers=self._ro_headers)
         if response.status_code != 204:
             self.raise_from_response(response)
 
@@ -106,28 +106,28 @@ class InstancesCommand(DeploydCommand):
 
     def get_credential(self, instance_uuid, credential_uuid):
         url = self._credentials_one_url(instance_uuid, credential_uuid)
-        response = self.session.get(url, headers=self._headers)
+        response = self.session.get(url, headers=self._ro_headers)
         if response.status_code != 200:
             self.raise_from_response(response)
         return response.json()
 
     def create_credential(self, instance_uuid, credential_data):
         url = self._credentials_all_url(instance_uuid)
-        response = self.session.post(url, data=json.dumps(credential_data), headers=self._headers)
+        response = self.session.post(url, data=json.dumps(credential_data), headers=self._rw_headers)
         if response.status_code != 201:
             self.raise_from_response(response)
         return response.json()
 
     def update_credential(self, instance_uuid, credential_uuid, credential_data):
         url = self._credentials_one_url(instance_uuid, credential_uuid)
-        response = self.session.put(url, data=json.dumps(credential_data), headers=self._headers)
+        response = self.session.put(url, data=json.dumps(credential_data), headers=self._rw_headers)
         if response.status_code != 200:
             self.raise_from_response(response)
         return response.json()
 
     def delete_credential(self, instance_uuid, credential_uuid):
         url = self._credentials_one_url(instance_uuid, credential_uuid)
-        response = self.session.delete(url, headers=self._headers)
+        response = self.session.delete(url, headers=self._ro_headers)
         if response.status_code != 204:
             self.raise_from_response(response)
 
@@ -176,5 +176,8 @@ class InstancesCommand(DeploydCommand):
 class TenantAwareInstancesCommand(InstancesCommand):
     def __init__(self, client, tenant_uuids):
         super().__init__(client)
-        self._headers = dict(self._headers)
-        self._headers['Wazo-Tenant'] = ', '.join(tenant_uuids)
+        self._ro_headers = dict(self._ro_headers)
+        self._rw_headers = dict(self._rw_headers)
+        wazo_tenant = ', '.join(tenant_uuids)
+        self._ro_headers['Wazo-Tenant'] = wazo_tenant
+        self._rw_headers['Wazo-Tenant'] = wazo_tenant
