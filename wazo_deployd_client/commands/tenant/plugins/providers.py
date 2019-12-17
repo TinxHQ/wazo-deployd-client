@@ -61,11 +61,11 @@ class ProvidersCommand(DeploydCommand):
 
         return response.json()
 
-    def get(self, provider_uuid):
-        response = self.session.get(
-            self._providers_one_url(provider_uuid),
-            headers=self._ro_headers,
-        )
+    def get(self, provider_uuid, tenant_uuid=None):
+        headers = self.ro_headers(tenant_uuid)
+        url = self._providers_one_url(provider_uuid)
+
+        response = self.session.get(url, headers=headers)
         if response.status_code != 200:
             self.raise_from_response(response)
 

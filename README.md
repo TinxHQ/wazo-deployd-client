@@ -23,7 +23,7 @@ client.config.get()
 
 ```python
 client.providers.list(recurse=True)
-client.providers.list(tenant_uuid=<tenant_uuid>)
+client.providers.list(tenant_uuid=tenant_uuid)
 ```
 
 ### Get informations provider
@@ -55,7 +55,7 @@ client.tenant(tenant_uuid).providers.create(provider_data)
 
 ```python
 client.providers.get(provider_uuid)
-client.tenant(tenant_uuid).providers.get(provider_uuid)
+client.providers.get(provider_uuid, tenant_uuid=tenant_uuid)
 ```
 
 ### Update a provider
