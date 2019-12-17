@@ -70,12 +70,11 @@ class ProvidersCommand(DeploydCommand):
 
         return response.json()
 
-    def update(self, provider_uuid, provider_data):
-        response = self.session.put(
-            self._providers_one_url(provider_uuid),
-            data=json.dumps(provider_data),
-            headers=self._rw_headers,
-        )
+    def update(self, provider_uuid, provider_data, tenant_uuid=None):
+        url = self._providers_one_url(provider_uuid)
+        headers = self.rw_headers(tenant_uuid=tenant_uuid)
+
+        response = self.session.put(url, data=json.dumps(provider_data), headers=headers)
         if response.status_code != 200:
             self.raise_from_response(response)
 
