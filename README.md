@@ -48,7 +48,7 @@ client.providers.platforms.list()
 
 ```python
 client.providers.create(provider_data)
-client.tenant(tenant_uuid).providers.create(provider_data)
+client.providers.create(provider_data, tenant_uuid=tenant_uuid)
 ```
 
 ### Get a provider

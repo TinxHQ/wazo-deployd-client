@@ -50,19 +50,18 @@ class ProvidersCommand(DeploydCommand):
 
         return response.json()
 
-    def create(self, provider_data):
-        response = self.session.post(
-            self._providers_all_url(),
-            data=json.dumps(provider_data),
-            headers=self._rw_headers,
-        )
+    def create(self, provider_data, tenant_uuid=None):
+        url = self._providers_all_url()
+        headers = self.rw_headers(tenant_uuid=tenant_uuid)
+
+        response = self.session.post(url, data=json.dumps(provider_data), headers=headers)
         if response.status_code != 201:
             self.raise_from_response(response)
 
         return response.json()
 
     def get(self, provider_uuid, tenant_uuid=None):
-        headers = self.ro_headers(tenant_uuid)
+        headers = self.ro_headers(tenant_uuid=tenant_uuid)
         url = self._providers_one_url(provider_uuid)
 
         response = self.session.get(url, headers=headers)
