@@ -104,7 +104,7 @@ client.tenant(tenant_uuid).instances.register(instance_data)
 
 ```python
 client.instances.get(instance_uuid)
-client.tenant(tenant_uuid).instances.get(instance_uuid)
+client.instances.get(instance_uuid, tenant_uuid=tenant_uuid)
 ```
 
 ### Get an instance wazo

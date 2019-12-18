@@ -45,11 +45,11 @@ class InstancesCommand(DeploydCommand):
         url = self._provider_instances_all_url(provider_uuid)
         return self._create_instance(url, instance_data)
 
-    def get(self, instance_uuid):
-        response = self.session.get(
-            self._instances_one_url(instance_uuid),
-            headers=self._ro_headers,
-        )
+    def get(self, instance_uuid, tenant_uuid=None):
+        url = self._instances_one_url(instance_uuid)
+        headers = self.ro_headers(tenant_uuid=tenant_uuid)
+
+        response = self.session.get(url, headers=headers)
         if response.status_code != 200:
             self.raise_from_response(response)
 
