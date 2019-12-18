@@ -111,7 +111,7 @@ client.instances.get(instance_uuid, tenant_uuid=tenant_uuid)
 
 ```python
 client.instances.get_wazo(instance_uuid)
-client.tenant(tenant_uuid).instances.get_wazo(instance_uuid)
+client.instances.get_wazo(instance_uuid, tenant_uuid=tenant_uuid)
 ```
 
 ### Pass wizard for an instance

@@ -55,11 +55,11 @@ class InstancesCommand(DeploydCommand):
 
         return response.json()
 
-    def get_wazo(self, instance_uuid):
-        response = self.session.get(
-            self._instances_wazo_url(instance_uuid),
-            headers=self._ro_headers,
-        )
+    def get_wazo(self, instance_uuid, tenant_uuid=None):
+        headers = self.ro_headers(tenant_uuid=tenant_uuid)
+        url = self._instances_wazo_url(instance_uuid)
+
+        response = self.session.get(url, headers=headers)
         if response.status_code != 200:
             self.raise_from_response(response)
 
