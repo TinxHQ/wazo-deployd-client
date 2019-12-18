@@ -62,14 +62,14 @@ client.providers.get(provider_uuid, tenant_uuid=tenant_uuid)
 
 ```python
 client.providers.update(provider_uuid, provider_data)
-client.providers.update(provider_uuid, provider_data, tenant_uuid)
+client.providers.update(provider_uuid, provider_data, tenant_uuid=tenant_uuid)
 ```
 
 ### Delete a provider
 
 ```python
 client.providers.delete(provider_uuid)
-client.tenant(tenant_uuid).providers.delete(provider_uuid)
+client.providers.delete(provider_uuid, tenant_uuid=tenant_uuid)
 ```
 
 ## Instances

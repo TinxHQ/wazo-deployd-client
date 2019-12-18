@@ -80,11 +80,11 @@ class ProvidersCommand(DeploydCommand):
 
         return response.json()
 
-    def delete(self, provider_uuid):
-        response = self.session.delete(
-            self._providers_one_url(provider_uuid),
-            headers=self._ro_headers,
-        )
+    def delete(self, provider_uuid, tenant_uuid=None):
+        headers = self.ro_headers(tenant_uuid=tenant_uuid)
+        url = self._providers_one_url(provider_uuid)
+
+        response = self.session.delete(url, headers=headers)
         if response.status_code != 204:
             self.raise_from_response(response)
 
@@ -134,6 +134,7 @@ class ProvidersCommand(DeploydCommand):
         return response.json()
 
 
+# TODO(pc-m): remove this class after making sure that nestbox does not use it
 class TenantAwareProvidersCommand(ProvidersCommand):
 
     def __init__(self, client, tenant_uuids):
