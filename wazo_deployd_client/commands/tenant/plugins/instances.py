@@ -14,16 +14,13 @@ class InstancesCommand(DeploydCommand):
         super().__init__(client)
 
     def list(self, provider_uuid=None, **params):
+        headers = self.ro_headers(**params)
         if provider_uuid:
             url = self._provider_instances_all_url(provider_uuid)
         else:
             url = self._instances_all_url()
 
-        response = self.session.get(
-            url,
-            headers=self._ro_headers,
-            params=params,
-        )
+        response = self.session.get(url, headers=headers, params=params)
         if response.status_code != 200:
             self.raise_from_response(response)
 

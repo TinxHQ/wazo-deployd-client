@@ -78,11 +78,12 @@ client.providers.delete(provider_uuid, tenant_uuid=tenant_uuid)
 
 ```python
 client.instances.list(limit=1, offset=1, order='name', direction='desc')
-client.tenant(tenant_uuid, other_tenant_uuid).instances.list()
+client.instances.list(tenant_uuid=tenant_uuid)
+client.instances.list(recurse=True)
 
 # List by provider
 client.instances.list(provider_uuid=provider_uuid)
-client.tenant(tenant_uuid).instances.list(provider_uuid=provider_uuid)
+client.instances.list(provider_uuid=provider_uuid, tenant_uuid=tenant_uuid)
 ```
 
 ### Create an instance
