@@ -118,7 +118,7 @@ client.instances.get_wazo(instance_uuid, tenant_uuid=tenant_uuid)
 
 ```python
 client.instances.wizard(instance_uuid, wizard_data)
-client.tenant(tenant_uuid).instances.wizard(instance_uuid, wizard_data)
+client.instances.wizard(instance_uuid, wizard_data, tenant_uuid=tenant_uuid)
 ```
 
 ### Update an instance
@@ -132,14 +132,14 @@ client.instances.update(instance_uuid, instance_data, tenant_uuid=tenant_uuid)
 
 ```python
 client.instances.delete(provider_uuid, instance_uuid)
-client.tenant(tenant_uuid).instances.delete(provider_uuid, instance_uuid)
+client.instances.delete(provider_uuid, instance_uuid, tenant_uuid=tenant_uuid)
 ```
 
 ### Unregister an instance
 
 ```python
 client.instances.unregister(instance_uuid)
-client.tenant(tenant_uuid).instances.unregister(instance_uuid)
+client.instances.unregister(instance_uuid, tenant_uuid=tenant_uuid)
 ```
 
 ### Register a credential
@@ -153,21 +153,21 @@ client.instances.create_credential(instance_uuid, credential_data, tenant_uuid=t
 
 ```python
 client.instances.get_credential(instancr_uuid, credential_uuid)
-client.tenant(tenant_uuid).instances.get_credential(instance_uuid, credential_uuid)
+client.instances.get_credential(instance_uuid, credential_uuid, tenant_uuid=tenant_uuid)
 ```
 
 ### Update a credential
 
 ```python
 client.instances.update_credential(instance_uuid, credential_uuid, credential_data)
-client.tenant(tenant_uuid).instances.update_credential(instance_uuid, credential_uuid, credential_data)
+client.instances.update_credential(instance_uuid, credential_uuid, credential_data, tenant_uuid=tenant_uuid)
 ```
 
 ### Delete a credential
 
 ```python
 client.instances.delete_credential(instance_uuid, credential_uuid)
-client.tenant(tenant_uuid).instances.delete_credential(instance_uuid, credential_uuid)
+client.instances.delete_credential(instance_uuid, credential_uuid, tenant_uuid=tenant_uuid)
 ```
 
 ## Debian package
