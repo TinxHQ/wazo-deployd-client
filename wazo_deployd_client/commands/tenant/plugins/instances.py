@@ -26,24 +26,26 @@ class InstancesCommand(DeploydCommand):
 
         return response.json()
 
-    def _create_instance(self, url, instance_data):
+    def _create_instance(self, url, instance_data, tenant_uuid):
+        headers = self.rw_headers(tenant_uuid=tenant_uuid)
+
         response = self.session.post(
             url,
             data=json.dumps(instance_data),
-            headers=self._rw_headers,
+            headers=headers,
         )
         if response.status_code != 201:
             self.raise_from_response(response)
 
         return response.json()
 
-    def register(self, instance_data):
+    def register(self, instance_data, tenant_uuid=None):
         url = self._instances_all_url()
-        return self._create_instance(url, instance_data)
+        return self._create_instance(url, instance_data, tenant_uuid)
 
-    def create(self, provider_uuid, instance_data):
+    def create(self, provider_uuid, instance_data, tenant_uuid=None):
         url = self._provider_instances_all_url(provider_uuid)
-        return self._create_instance(url, instance_data)
+        return self._create_instance(url, instance_data, tenant_uuid)
 
     def get(self, instance_uuid, tenant_uuid=None):
         url = self._instances_one_url(instance_uuid)
@@ -74,12 +76,11 @@ class InstancesCommand(DeploydCommand):
         if response.status_code != 204:
             self.raise_from_response(response)
 
-    def update(self, instance_uuid, instance_data):
-        response = self.session.put(
-            self._instances_one_url(instance_uuid),
-            data=json.dumps(instance_data),
-            headers=self._rw_headers,
-        )
+    def update(self, instance_uuid, instance_data, tenant_uuid=None):
+        url = self._instances_one_url(instance_uuid)
+        headers = self.rw_headers(tenant_uuid=tenant_uuid)
+
+        response = self.session.put(url, data=json.dumps(instance_data), headers=headers)
         if response.status_code != 200:
             self.raise_from_response(response)
 

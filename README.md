@@ -90,14 +90,14 @@ client.instances.list(provider_uuid=provider_uuid, tenant_uuid=tenant_uuid)
 
 ```python
 client.instances.create(provider_uuid, instance_data)
-client.tenant(tenant_uuid).instances.create(provider_uuid, instance_data)
+client.instances.create(provider_uuid, instance_data, tenant_uuid=tenant_uuid)
 ```
 
 ### Register an instance
 
 ```python
 client.instances.register(instance_data)
-client.tenant(tenant_uuid).instances.register(instance_data)
+client.instances.register(instance_data, tenant_uuid=tenant_uuid)
 ```
 
 ### Get an instance
@@ -125,7 +125,7 @@ client.tenant(tenant_uuid).instances.wizard(instance_uuid, wizard_data)
 
 ```python
 client.instances.update(instance_uuid, instance_data)
-client.tenant(tenant_uuid).instances.update(instance_uuid, instance_data)
+client.instances.update(instance_uuid, instance_data, tenant_uuid=tenant_uuid)
 ```
 
 ### Delete an instance
@@ -146,7 +146,7 @@ client.tenant(tenant_uuid).instances.unregister(instance_uuid)
 
 ```python
 client.instances.create_credential(instance_uuid, credential_data)
-client.tenant(tenant_uuid).instances.create_credential(instance_uuid, credential_data)
+client.instances.create_credential(instance_uuid, credential_data, tenant_uuid=tenant_uuid)
 ```
 
 ### Get a credential
