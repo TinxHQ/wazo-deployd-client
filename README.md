@@ -26,6 +26,18 @@ client.providers.list()
 client.tenant(tenant_uuid, other_tenant_uuid).providers.list()
 ```
 
+### Get informations provider
+
+```python
+client.providers.list_images()
+client.providers.list_locations()
+client.providers.list_key_pairs()
+client.providers.list_sizes()
+client.providers.list_subnets()
+client.providers.list_networks()
+client.providers.list_regions()
+```
+
 ### List platforms
 
 ```python
