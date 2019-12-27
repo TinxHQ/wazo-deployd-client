@@ -119,15 +119,13 @@ class ProvidersCommand(DeploydCommand):
         )
 
     def _providers_resources(self, endpoint, provider_uuid, **params):
+        headers = self.ro_headers(**prams)
         url = '{base_url}/{endpoint}'.format(
             base_url=self._providers_one_url(provider_uuid),
             endpoint=endpoint
         )
-        response = self.session.get(
-            url,
-            headers=self._headers,
-            params=params,
-        )
+
+        response = self.session.get(url, headers=headers, params=params)
         if response.status_code != 200:
             self.raise_from_response(response)
 
