@@ -22,8 +22,8 @@ client.config.get()
 ### List providers
 
 ```python
-client.providers.list()
-client.tenant(tenant_uuid, other_tenant_uuid).providers.list()
+client.providers.list(recurse=True)
+client.providers.list(tenant_uuid=tenant_uuid)
 ```
 
 ### Get informations provider
@@ -48,28 +48,28 @@ client.providers.platforms.list()
 
 ```python
 client.providers.create(provider_data)
-client.tenant(tenant_uuid).providers.create(provider_data)
+client.providers.create(provider_data, tenant_uuid=tenant_uuid)
 ```
 
 ### Get a provider
 
 ```python
 client.providers.get(provider_uuid)
-client.tenant(tenant_uuid).providers.get(provider_uuid)
+client.providers.get(provider_uuid, tenant_uuid=tenant_uuid)
 ```
 
 ### Update a provider
 
 ```python
 client.providers.update(provider_uuid, provider_data)
-client.tenant(tenant_uuid).providers.update(provider_uuid, provider_data)
+client.providers.update(provider_uuid, provider_data, tenant_uuid=tenant_uuid)
 ```
 
 ### Delete a provider
 
 ```python
 client.providers.delete(provider_uuid)
-client.tenant(tenant_uuid).providers.delete(provider_uuid)
+client.providers.delete(provider_uuid, tenant_uuid=tenant_uuid)
 ```
 
 ## Instances
@@ -78,95 +78,96 @@ client.tenant(tenant_uuid).providers.delete(provider_uuid)
 
 ```python
 client.instances.list(limit=1, offset=1, order='name', direction='desc')
-client.tenant(tenant_uuid, other_tenant_uuid).instances.list()
+client.instances.list(tenant_uuid=tenant_uuid)
+client.instances.list(recurse=True)
 
 # List by provider
 client.instances.list(provider_uuid=provider_uuid)
-client.tenant(tenant_uuid).instances.list(provider_uuid=provider_uuid)
+client.instances.list(provider_uuid=provider_uuid, tenant_uuid=tenant_uuid)
 ```
 
 ### Create an instance
 
 ```python
 client.instances.create(provider_uuid, instance_data)
-client.tenant(tenant_uuid).instances.create(provider_uuid, instance_data)
+client.instances.create(provider_uuid, instance_data, tenant_uuid=tenant_uuid)
 ```
 
 ### Register an instance
 
 ```python
 client.instances.register(instance_data)
-client.tenant(tenant_uuid).instances.register(instance_data)
+client.instances.register(instance_data, tenant_uuid=tenant_uuid)
 ```
 
 ### Get an instance
 
 ```python
 client.instances.get(instance_uuid)
-client.tenant(tenant_uuid).instances.get(instance_uuid)
+client.instances.get(instance_uuid, tenant_uuid=tenant_uuid)
 ```
 
 ### Get an instance wazo
 
 ```python
 client.instances.get_wazo(instance_uuid)
-client.tenant(tenant_uuid).instances.get_wazo(instance_uuid)
+client.instances.get_wazo(instance_uuid, tenant_uuid=tenant_uuid)
 ```
 
 ### Pass wizard for an instance
 
 ```python
 client.instances.wizard(instance_uuid, wizard_data)
-client.tenant(tenant_uuid).instances.wizard(instance_uuid, wizard_data)
+client.instances.wizard(instance_uuid, wizard_data, tenant_uuid=tenant_uuid)
 ```
 
 ### Update an instance
 
 ```python
 client.instances.update(instance_uuid, instance_data)
-client.tenant(tenant_uuid).instances.update(instance_uuid, instance_data)
+client.instances.update(instance_uuid, instance_data, tenant_uuid=tenant_uuid)
 ```
 
 ### Delete an instance
 
 ```python
 client.instances.delete(provider_uuid, instance_uuid)
-client.tenant(tenant_uuid).instances.delete(provider_uuid, instance_uuid)
+client.instances.delete(provider_uuid, instance_uuid, tenant_uuid=tenant_uuid)
 ```
 
 ### Unregister an instance
 
 ```python
 client.instances.unregister(instance_uuid)
-client.tenant(tenant_uuid).instances.unregister(instance_uuid)
+client.instances.unregister(instance_uuid, tenant_uuid=tenant_uuid)
 ```
 
 ### Register a credential
 
 ```python
 client.instances.create_credential(instance_uuid, credential_data)
-client.tenant(tenant_uuid).instances.create_credential(instance_uuid, credential_data)
+client.instances.create_credential(instance_uuid, credential_data, tenant_uuid=tenant_uuid)
 ```
 
 ### Get a credential
 
 ```python
 client.instances.get_credential(instancr_uuid, credential_uuid)
-client.tenant(tenant_uuid).instances.get_credential(instance_uuid, credential_uuid)
+client.instances.get_credential(instance_uuid, credential_uuid, tenant_uuid=tenant_uuid)
 ```
 
 ### Update a credential
 
 ```python
 client.instances.update_credential(instance_uuid, credential_uuid, credential_data)
-client.tenant(tenant_uuid).instances.update_credential(instance_uuid, credential_uuid, credential_data)
+client.instances.update_credential(instance_uuid, credential_uuid, credential_data, tenant_uuid=tenant_uuid)
 ```
 
 ### Delete a credential
 
 ```python
 client.instances.delete_credential(instance_uuid, credential_uuid)
-client.tenant(tenant_uuid).instances.delete_credential(instance_uuid, credential_uuid)
+client.instances.delete_credential(instance_uuid, credential_uuid, tenant_uuid=tenant_uuid)
 ```
 
 ## Debian package

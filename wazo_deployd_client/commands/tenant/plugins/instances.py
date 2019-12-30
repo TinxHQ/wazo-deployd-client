@@ -1,4 +1,4 @@
-# Copyright 2017 The Wazo Authors  (see AUTHORS file)
+# Copyright 2017-2019 The Wazo Authors  (see AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
@@ -9,126 +9,129 @@ from wazo_deployd_client.command import DeploydCommand
 class InstancesCommand(DeploydCommand):
 
     resource = 'instances'
-    _headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
     def __init__(self, client):
         super().__init__(client)
 
     def list(self, provider_uuid=None, **params):
+        headers = self.ro_headers(**params)
         if provider_uuid:
             url = self._provider_instances_all_url(provider_uuid)
         else:
             url = self._instances_all_url()
 
-        response = self.session.get(
-            url,
-            headers=self._headers,
-            params=params,
-        )
+        response = self.session.get(url, headers=headers, params=params)
         if response.status_code != 200:
             self.raise_from_response(response)
 
         return response.json()
 
-    def _create_instance(self, url, instance_data):
+    def _create_instance(self, url, instance_data, tenant_uuid):
+        headers = self.rw_headers(tenant_uuid=tenant_uuid)
+
         response = self.session.post(
             url,
             data=json.dumps(instance_data),
-            headers=self._headers,
+            headers=headers,
         )
         if response.status_code != 201:
             self.raise_from_response(response)
 
         return response.json()
 
-    def register(self, instance_data):
+    def register(self, instance_data, tenant_uuid=None):
         url = self._instances_all_url()
-        return self._create_instance(url, instance_data)
+        return self._create_instance(url, instance_data, tenant_uuid)
 
-    def create(self, provider_uuid, instance_data):
+    def create(self, provider_uuid, instance_data, tenant_uuid=None):
         url = self._provider_instances_all_url(provider_uuid)
-        return self._create_instance(url, instance_data)
+        return self._create_instance(url, instance_data, tenant_uuid)
 
-    def get(self, instance_uuid):
-        response = self.session.get(
-            self._instances_one_url(instance_uuid),
-            headers=self._headers,
-        )
+    def get(self, instance_uuid, tenant_uuid=None):
+        url = self._instances_one_url(instance_uuid)
+        headers = self.ro_headers(tenant_uuid=tenant_uuid)
+
+        response = self.session.get(url, headers=headers)
         if response.status_code != 200:
             self.raise_from_response(response)
 
         return response.json()
 
-    def get_wazo(self, instance_uuid):
-        response = self.session.get(
-            self._instances_wazo_url(instance_uuid),
-            headers=self._headers,
-        )
+    def get_wazo(self, instance_uuid, tenant_uuid=None):
+        headers = self.ro_headers(tenant_uuid=tenant_uuid)
+        url = self._instances_wazo_url(instance_uuid)
+
+        response = self.session.get(url, headers=headers)
         if response.status_code != 200:
             self.raise_from_response(response)
 
         return response.json()
 
-    def wizard(self, instance_uuid, wizard_data):
+    def wizard(self, instance_uuid, wizard_data, tenant_uuid=None):
+        headers = self.rw_headers(tenant_uuid=tenant_uuid)
         response = self.session.post(
             self._instances_wizard_url(instance_uuid),
             data=json.dumps(wizard_data),
-            headers=self._headers,
+            headers=headers,
         )
         if response.status_code != 204:
             self.raise_from_response(response)
 
-    def update(self, instance_uuid, instance_data):
-        response = self.session.put(
-            self._instances_one_url(instance_uuid),
-            data=json.dumps(instance_data),
-            headers=self._headers,
-        )
+    def update(self, instance_uuid, instance_data, tenant_uuid=None):
+        url = self._instances_one_url(instance_uuid)
+        headers = self.rw_headers(tenant_uuid=tenant_uuid)
+
+        response = self.session.put(url, data=json.dumps(instance_data), headers=headers)
         if response.status_code != 200:
             self.raise_from_response(response)
 
         return response.json()
 
-    def _delete_instance(self, url):
-        response = self.session.delete(url, headers=self._headers)
+    def _delete_instance(self, url, tenant_uuid):
+        headers = self.ro_headers(tenant_uuid=tenant_uuid)
+        response = self.session.delete(url, headers=headers)
         if response.status_code != 204:
             self.raise_from_response(response)
 
-    def unregister(self, instance_uuid):
+    def unregister(self, instance_uuid, tenant_uuid=None):
         url = self._instances_one_url(instance_uuid)
-        return self._delete_instance(url)
+        return self._delete_instance(url, tenant_uuid)
 
-    def delete(self, provider_uuid, instance_uuid):
+    def delete(self, provider_uuid, instance_uuid, tenant_uuid=None):
         url = self._provider_instances_one_url(
             instance_uuid,
             provider_uuid,
         )
-        return self._delete_instance(url)
+        return self._delete_instance(url, tenant_uuid)
 
-    def get_credential(self, instance_uuid, credential_uuid):
+    def get_credential(self, instance_uuid, credential_uuid, tenant_uuid=None):
+        headers = self.ro_headers(tenant_uuid=tenant_uuid)
         url = self._credentials_one_url(instance_uuid, credential_uuid)
-        response = self.session.get(url, headers=self._headers)
+        response = self.session.get(url, headers=headers)
         if response.status_code != 200:
             self.raise_from_response(response)
         return response.json()
 
-    def create_credential(self, instance_uuid, credential_data):
+    def create_credential(self, instance_uuid, credential_data, tenant_uuid=None):
+        headers = self.rw_headers(tenant_uuid=tenant_uuid)
         url = self._credentials_all_url(instance_uuid)
-        response = self.session.post(url, data=json.dumps(credential_data), headers=self._headers)
+        response = self.session.post(url, data=json.dumps(credential_data), headers=headers)
         if response.status_code != 201:
             self.raise_from_response(response)
         return response.json()
 
-    def update_credential(self, instance_uuid, credential_uuid, credential_data):
+    def update_credential(self, instance_uuid, credential_uuid, credential_data, tenant_uuid=None):
+        headers = self.rw_headers(tenant_uuid=tenant_uuid)
         url = self._credentials_one_url(instance_uuid, credential_uuid)
-        response = self.session.put(url, data=json.dumps(credential_data), headers=self._headers)
+        response = self.session.put(url, data=json.dumps(credential_data), headers=headers)
         if response.status_code != 200:
             self.raise_from_response(response)
         return response.json()
 
-    def delete_credential(self, instance_uuid, credential_uuid):
+    def delete_credential(self, instance_uuid, credential_uuid, tenant_uuid=None):
+        headers = self.ro_headers(tenant_uuid=tenant_uuid)
         url = self._credentials_one_url(instance_uuid, credential_uuid)
-        response = self.session.delete(url, headers=self._headers)
+        response = self.session.delete(url, headers=headers)
         if response.status_code != 204:
             self.raise_from_response(response)
 
@@ -177,5 +180,8 @@ class InstancesCommand(DeploydCommand):
 class TenantAwareInstancesCommand(InstancesCommand):
     def __init__(self, client, tenant_uuids):
         super().__init__(client)
-        self._headers = dict(self._headers)
-        self._headers['Wazo-Tenant'] = ', '.join(tenant_uuids)
+        self._ro_headers = dict(self._ro_headers)
+        self._rw_headers = dict(self._rw_headers)
+        wazo_tenant = ', '.join(tenant_uuids)
+        self._ro_headers['Wazo-Tenant'] = wazo_tenant
+        self._rw_headers['Wazo-Tenant'] = wazo_tenant

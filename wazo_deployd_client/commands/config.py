@@ -1,4 +1,4 @@
-# Copyright 2017 The Wazo Authors  (see AUTHORS file)
+# Copyright 2017-2019 The Wazo Authors  (see AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from wazo_deployd_client.command import DeploydCommand
@@ -7,9 +7,8 @@ from wazo_deployd_client.command import DeploydCommand
 class ConfigCommand(DeploydCommand):
 
     resource = 'config'
-    _headers = {'Accept': 'application/json'}
 
     def get(self):
-        r = self.session.get(self.base_url, headers=self._headers)
+        r = self.session.get(self.base_url, headers=self._ro_headers)
         self.raise_from_response(r)
         return r.json()
