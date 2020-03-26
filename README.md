@@ -17,6 +17,12 @@ client = Client('localhost', verify_certificate=False)
 client.config.get()
 ```
 
+## Status
+
+```python
+client.status.check()
+```
+
 ## Providers
 
 ### List providers
