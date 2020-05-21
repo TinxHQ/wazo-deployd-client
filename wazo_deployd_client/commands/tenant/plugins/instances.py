@@ -1,4 +1,4 @@
-# Copyright 2017-2019 The Wazo Authors  (see AUTHORS file)
+# Copyright 2017-2020 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
@@ -66,16 +66,6 @@ class InstancesCommand(DeploydCommand):
             self.raise_from_response(response)
 
         return response.json()
-
-    def wizard(self, instance_uuid, wizard_data, tenant_uuid=None):
-        headers = self.rw_headers(tenant_uuid=tenant_uuid)
-        response = self.session.post(
-            self._instances_wizard_url(instance_uuid),
-            data=json.dumps(wizard_data),
-            headers=headers,
-        )
-        if response.status_code != 204:
-            self.raise_from_response(response)
 
     def update(self, instance_uuid, instance_data, tenant_uuid=None):
         url = self._instances_one_url(instance_uuid)
@@ -147,11 +137,6 @@ class InstancesCommand(DeploydCommand):
     def _instances_wazo_url(self, instance_uuid):
         return '{base_url}/wazo'.format(
             base_url=self._instances_one_url(instance_uuid),
-        )
-
-    def _instances_wizard_url(self, instance_uuid):
-        return '{base_url}/wizard'.format(
-            base_url=self._instances_wazo_url(instance_uuid),
         )
 
     def _credentials_one_url(self, instance_uuid, credential_uuid):

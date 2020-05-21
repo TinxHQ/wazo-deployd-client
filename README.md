@@ -120,13 +120,6 @@ client.instances.get_wazo(instance_uuid)
 client.instances.get_wazo(instance_uuid, tenant_uuid=tenant_uuid)
 ```
 
-### Pass wizard for an instance
-
-```python
-client.instances.wizard(instance_uuid, wizard_data)
-client.instances.wizard(instance_uuid, wizard_data, tenant_uuid=tenant_uuid)
-```
-
 ### Update an instance
 
 ```python
