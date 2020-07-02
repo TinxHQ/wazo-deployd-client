@@ -1,4 +1,4 @@
-# Copyright 2017-2019 The Wazo Authors  (see AUTHORS file)
+# Copyright 2017-2020 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 
@@ -11,14 +11,17 @@ class DeploydClient(BaseClient):
 
     def __init__(self,
                  host,
-                 port=9800,
+                 port=443,
+                 prefix='/api/deployd',
                  version='0.1',
                  **kwargs):
         super(DeploydClient, self).__init__(
-              host=host,
-              port=port,
-              version=version,
-              **kwargs)
+            host=host,
+            port=port,
+            prefix=prefix,
+            version=version,
+            **kwargs
+        )
 
     # this function replicates the tenant method of the BaseClient which is overriden by the tenant command
     def configured_tenant(self):
