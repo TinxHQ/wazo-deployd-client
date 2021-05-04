@@ -1,4 +1,4 @@
-# Copyright 2017-2019 The Wazo Authors  (see AUTHORS file)
+# Copyright 2017-2021 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import logging
@@ -32,7 +32,6 @@ class Tenant(object):
         return attribute
 
     def _load_plugins(self):
-
         def set_extension_instance_as_attribute(extension_):
             setattr(self, extension_.name, extension_.plugin)
             plugin_names.add(extension_.name)
