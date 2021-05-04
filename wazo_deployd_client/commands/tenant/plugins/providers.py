@@ -1,4 +1,4 @@
-# Copyright 2017-2019 The Wazo Authors  (see AUTHORS file)
+# Copyright 2017-2021 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
@@ -37,7 +37,8 @@ class ProvidersCommand(DeploydCommand):
     def __init__(self, client):
         super().__init__(client)
         self.platforms = PlatformsSubcommand(
-            client, self.base_url,
+            client,
+            self.base_url,
         )
 
     def list(self, **params):
@@ -54,7 +55,9 @@ class ProvidersCommand(DeploydCommand):
         url = self._providers_all_url()
         headers = self.rw_headers(tenant_uuid=tenant_uuid)
 
-        response = self.session.post(url, data=json.dumps(provider_data), headers=headers)
+        response = self.session.post(
+            url, data=json.dumps(provider_data), headers=headers
+        )
         if response.status_code != 201:
             self.raise_from_response(response)
 
@@ -74,7 +77,9 @@ class ProvidersCommand(DeploydCommand):
         url = self._providers_one_url(provider_uuid)
         headers = self.rw_headers(tenant_uuid=tenant_uuid)
 
-        response = self.session.put(url, data=json.dumps(provider_data), headers=headers)
+        response = self.session.put(
+            url, data=json.dumps(provider_data), headers=headers
+        )
         if response.status_code != 200:
             self.raise_from_response(response)
 
@@ -121,8 +126,7 @@ class ProvidersCommand(DeploydCommand):
     def _providers_resources(self, endpoint, provider_uuid, **params):
         headers = self.ro_headers(**params)
         url = '{base_url}/{endpoint}'.format(
-            base_url=self._providers_one_url(provider_uuid),
-            endpoint=endpoint
+            base_url=self._providers_one_url(provider_uuid), endpoint=endpoint
         )
 
         response = self.session.get(url, headers=headers, params=params)
@@ -134,7 +138,6 @@ class ProvidersCommand(DeploydCommand):
 
 # TODO(pc-m): remove this class after making sure that nestbox does not use it
 class TenantAwareProvidersCommand(ProvidersCommand):
-
     def __init__(self, client, tenant_uuids):
         super().__init__(client)
         self._ro_headers = dict(self._ro_headers)

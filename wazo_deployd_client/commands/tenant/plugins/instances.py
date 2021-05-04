@@ -1,4 +1,4 @@
-# Copyright 2017-2020 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2017-2021 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
@@ -71,7 +71,9 @@ class InstancesCommand(DeploydCommand):
         url = self._instances_one_url(instance_uuid)
         headers = self.rw_headers(tenant_uuid=tenant_uuid)
 
-        response = self.session.put(url, data=json.dumps(instance_data), headers=headers)
+        response = self.session.put(
+            url, data=json.dumps(instance_data), headers=headers
+        )
         if response.status_code != 200:
             self.raise_from_response(response)
 
@@ -105,15 +107,21 @@ class InstancesCommand(DeploydCommand):
     def create_credential(self, instance_uuid, credential_data, tenant_uuid=None):
         headers = self.rw_headers(tenant_uuid=tenant_uuid)
         url = self._credentials_all_url(instance_uuid)
-        response = self.session.post(url, data=json.dumps(credential_data), headers=headers)
+        response = self.session.post(
+            url, data=json.dumps(credential_data), headers=headers
+        )
         if response.status_code != 201:
             self.raise_from_response(response)
         return response.json()
 
-    def update_credential(self, instance_uuid, credential_uuid, credential_data, tenant_uuid=None):
+    def update_credential(
+        self, instance_uuid, credential_uuid, credential_data, tenant_uuid=None
+    ):
         headers = self.rw_headers(tenant_uuid=tenant_uuid)
         url = self._credentials_one_url(instance_uuid, credential_uuid)
-        response = self.session.put(url, data=json.dumps(credential_data), headers=headers)
+        response = self.session.put(
+            url, data=json.dumps(credential_data), headers=headers
+        )
         if response.status_code != 200:
             self.raise_from_response(response)
         return response.json()
