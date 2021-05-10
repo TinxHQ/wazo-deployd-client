@@ -14,6 +14,11 @@ pipeline {
         sh 'tox -e linters'
       }
     }
+    stage('Unit tests') {
+      steps {
+        sh 'tox -e py37'
+      }
+    }
     stage('Build and deploy') {
       steps {
         // This package is uploaded to public repo as a dependency to wazo-nestbox-plugin
