@@ -2,7 +2,7 @@ pipeline {
   agent any
   parameters {
       choice(name: 'test', choices: ['yes','no'], description: 'Run all tests ?')
-      choice(name: 'build_and_publish', choices: ['no','yes'], description: 'Build and publish assets ?')
+      choice(name: 'build_and_publish', choices: ['yes','no'], description: 'Build and publish assets ?')
   }
   environment {
     MAIL_RECIPIENTS = 'dev+tests-reports@wazo.community'
