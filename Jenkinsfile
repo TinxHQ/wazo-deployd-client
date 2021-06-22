@@ -1,5 +1,9 @@
 pipeline {
   agent any
+  parameters {
+      choice(name: 'test', choices: ['yes','no'], description: 'Run all tests ?')
+      choice(name: 'build_and_publish', choices: ['yes','no'], description: 'Build and publish assets ?')
+  }
   environment {
     MAIL_RECIPIENTS = 'dev+tests-reports@wazo.community'
   }
@@ -10,16 +14,31 @@ pipeline {
   }
   stages {
     stage('Linters') {
+      when {
+        expression {
+          test == 'yes'
+        }
+      }
       steps {
         sh 'tox -e linters'
       }
     }
     stage('Unit tests') {
+      when {
+        expression {
+          test == 'yes'
+        }
+      }
       steps {
         sh 'tox -e py37'
       }
     }
-    stage('Build and deploy') {
+    stage('Debian build and deploy') {
+      when {
+        expression {
+          build_and_publish == 'yes'
+        }
+      }
       steps {
         // This package is uploaded to public repo as a dependency to wazo-nestbox-plugin
         build job: 'build-package', parameters: [
