@@ -85,7 +85,7 @@ client.providers.delete(provider_uuid, tenant_uuid=tenant_uuid)
 ```python
 client.instances.list(limit=1, offset=1, order='name', direction='desc')
 client.instances.list(tenant_uuid=tenant_uuid)
-client.instances.list(recurse=True)
+client.instances.list()
 
 # List by provider
 client.instances.list(provider_uuid=provider_uuid)
