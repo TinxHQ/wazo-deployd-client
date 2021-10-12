@@ -1,8 +1,6 @@
 # Copyright 2017-2021 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import json
-
 from wazo_deployd_client.command import DeploydCommand
 
 
@@ -15,10 +13,9 @@ class PlatformsSubcommand(DeploydCommand):
         self.base_url = base_url
 
     def list(self):
-        response = self.session.get(
-            self._providers_platforms_url(),
-            headers=self._ro_headers,
-        )
+        headers = self._get_headers()
+        url = self._providers_platforms_url()
+        response = self.session.get(url, headers=headers)
         if response.status_code != 200:
             self.raise_from_response(response)
 
@@ -43,7 +40,7 @@ class ProvidersCommand(DeploydCommand):
 
     def list(self, **params):
         url = self._providers_all_url()
-        headers = self.ro_headers(**params)
+        headers = self._get_headers(**params)
 
         response = self.session.get(url, headers=headers, params=params)
         if response.status_code != 200:
@@ -53,18 +50,16 @@ class ProvidersCommand(DeploydCommand):
 
     def create(self, provider_data, tenant_uuid=None):
         url = self._providers_all_url()
-        headers = self.rw_headers(tenant_uuid=tenant_uuid)
+        headers = self._get_headers(tenant_uuid=tenant_uuid)
 
-        response = self.session.post(
-            url, data=json.dumps(provider_data), headers=headers
-        )
+        response = self.session.post(url, json=provider_data, headers=headers)
         if response.status_code != 201:
             self.raise_from_response(response)
 
         return response.json()
 
     def get(self, provider_uuid, tenant_uuid=None):
-        headers = self.ro_headers(tenant_uuid=tenant_uuid)
+        headers = self._get_headers(tenant_uuid=tenant_uuid)
         url = self._providers_one_url(provider_uuid)
 
         response = self.session.get(url, headers=headers)
@@ -75,18 +70,16 @@ class ProvidersCommand(DeploydCommand):
 
     def update(self, provider_uuid, provider_data, tenant_uuid=None):
         url = self._providers_one_url(provider_uuid)
-        headers = self.rw_headers(tenant_uuid=tenant_uuid)
+        headers = self._get_headers(tenant_uuid=tenant_uuid)
 
-        response = self.session.put(
-            url, data=json.dumps(provider_data), headers=headers
-        )
+        response = self.session.put(url, json=provider_data, headers=headers)
         if response.status_code != 200:
             self.raise_from_response(response)
 
         return response.json()
 
     def delete(self, provider_uuid, tenant_uuid=None):
-        headers = self.ro_headers(tenant_uuid=tenant_uuid)
+        headers = self._get_headers(tenant_uuid=tenant_uuid)
         url = self._providers_one_url(provider_uuid)
 
         response = self.session.delete(url, headers=headers)
@@ -124,7 +117,7 @@ class ProvidersCommand(DeploydCommand):
         )
 
     def _providers_resources(self, endpoint, provider_uuid, **params):
-        headers = self.ro_headers(**params)
+        headers = self._get_headers(**params)
         url = '{base_url}/{endpoint}'.format(
             base_url=self._providers_one_url(provider_uuid), endpoint=endpoint
         )
