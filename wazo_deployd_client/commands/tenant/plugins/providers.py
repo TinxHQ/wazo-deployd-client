@@ -127,14 +127,3 @@ class ProvidersCommand(DeploydCommand):
             self.raise_from_response(response)
 
         return response.json()
-
-
-# TODO(pc-m): remove this class after making sure that nestbox does not use it
-class TenantAwareProvidersCommand(ProvidersCommand):
-    def __init__(self, client, tenant_uuids):
-        super().__init__(client)
-        self._ro_headers = dict(self._ro_headers)
-        self._rw_headers = dict(self._rw_headers)
-        wazo_tenant = ', '.join(tenant_uuids)
-        self._ro_headers['Wazo-Tenant'] = wazo_tenant
-        self._rw_headers['Wazo-Tenant'] = wazo_tenant

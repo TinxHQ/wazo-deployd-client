@@ -155,13 +155,3 @@ class InstancesCommand(DeploydCommand):
             base_url=self._provider_instances_all_url(provider_uuid),
             instance_uuid=instance_uuid,
         )
-
-
-class TenantAwareInstancesCommand(InstancesCommand):
-    def __init__(self, client, tenant_uuids):
-        super().__init__(client)
-        self._ro_headers = dict(self._ro_headers)
-        self._rw_headers = dict(self._rw_headers)
-        wazo_tenant = ', '.join(tenant_uuids)
-        self._ro_headers['Wazo-Tenant'] = wazo_tenant
-        self._rw_headers['Wazo-Tenant'] = wazo_tenant
