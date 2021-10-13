@@ -23,9 +23,5 @@ setup(
             'status = wazo_deployd_client.commands.status:StatusCommand',
             'tenant = wazo_deployd_client.commands.tenant:Tenant',
         ],
-        'wazo_deployd_client.commands.tenant.plugins': [
-            f'providers = {TENANT_MODULE}.providers:TenantAwareProvidersCommand',
-            f'instances = {TENANT_MODULE}.instances:TenantAwareInstancesCommand',
-        ],
     },
 )

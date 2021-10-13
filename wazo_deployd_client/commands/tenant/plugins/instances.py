@@ -1,8 +1,6 @@
 # Copyright 2017-2021 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import json
-
 from wazo_deployd_client.command import DeploydCommand
 
 
@@ -14,7 +12,7 @@ class InstancesCommand(DeploydCommand):
         super().__init__(client)
 
     def list(self, provider_uuid=None, **params):
-        headers = self.ro_headers(**params)
+        headers = self._get_headers(**params)
         if provider_uuid:
             url = self._provider_instances_all_url(provider_uuid)
         else:
@@ -27,13 +25,8 @@ class InstancesCommand(DeploydCommand):
         return response.json()
 
     def _create_instance(self, url, instance_data, tenant_uuid):
-        headers = self.rw_headers(tenant_uuid=tenant_uuid)
-
-        response = self.session.post(
-            url,
-            data=json.dumps(instance_data),
-            headers=headers,
-        )
+        headers = self._get_headers(tenant_uuid=tenant_uuid)
+        response = self.session.post(url, json=instance_data, headers=headers)
         if response.status_code != 201:
             self.raise_from_response(response)
 
@@ -49,7 +42,7 @@ class InstancesCommand(DeploydCommand):
 
     def get(self, instance_uuid, tenant_uuid=None):
         url = self._instances_one_url(instance_uuid)
-        headers = self.ro_headers(tenant_uuid=tenant_uuid)
+        headers = self._get_headers(tenant_uuid=tenant_uuid)
 
         response = self.session.get(url, headers=headers)
         if response.status_code != 200:
@@ -58,7 +51,7 @@ class InstancesCommand(DeploydCommand):
         return response.json()
 
     def get_wazo(self, instance_uuid, tenant_uuid=None):
-        headers = self.ro_headers(tenant_uuid=tenant_uuid)
+        headers = self._get_headers(tenant_uuid=tenant_uuid)
         url = self._instances_wazo_url(instance_uuid)
 
         response = self.session.get(url, headers=headers)
@@ -69,18 +62,16 @@ class InstancesCommand(DeploydCommand):
 
     def update(self, instance_uuid, instance_data, tenant_uuid=None):
         url = self._instances_one_url(instance_uuid)
-        headers = self.rw_headers(tenant_uuid=tenant_uuid)
+        headers = self._get_headers(tenant_uuid=tenant_uuid)
 
-        response = self.session.put(
-            url, data=json.dumps(instance_data), headers=headers
-        )
+        response = self.session.put(url, json=instance_data, headers=headers)
         if response.status_code != 200:
             self.raise_from_response(response)
 
         return response.json()
 
     def _delete_instance(self, url, tenant_uuid):
-        headers = self.ro_headers(tenant_uuid=tenant_uuid)
+        headers = self._get_headers(tenant_uuid=tenant_uuid)
         response = self.session.delete(url, headers=headers)
         if response.status_code != 204:
             self.raise_from_response(response)
@@ -97,7 +88,7 @@ class InstancesCommand(DeploydCommand):
         return self._delete_instance(url, tenant_uuid)
 
     def get_credential(self, instance_uuid, credential_uuid, tenant_uuid=None):
-        headers = self.ro_headers(tenant_uuid=tenant_uuid)
+        headers = self._get_headers(tenant_uuid=tenant_uuid)
         url = self._credentials_one_url(instance_uuid, credential_uuid)
         response = self.session.get(url, headers=headers)
         if response.status_code != 200:
@@ -105,11 +96,9 @@ class InstancesCommand(DeploydCommand):
         return response.json()
 
     def create_credential(self, instance_uuid, credential_data, tenant_uuid=None):
-        headers = self.rw_headers(tenant_uuid=tenant_uuid)
+        headers = self._get_headers(tenant_uuid=tenant_uuid)
         url = self._credentials_all_url(instance_uuid)
-        response = self.session.post(
-            url, data=json.dumps(credential_data), headers=headers
-        )
+        response = self.session.post(url, json=credential_data, headers=headers)
         if response.status_code != 201:
             self.raise_from_response(response)
         return response.json()
@@ -117,17 +106,15 @@ class InstancesCommand(DeploydCommand):
     def update_credential(
         self, instance_uuid, credential_uuid, credential_data, tenant_uuid=None
     ):
-        headers = self.rw_headers(tenant_uuid=tenant_uuid)
+        headers = self._get_headers(tenant_uuid=tenant_uuid)
         url = self._credentials_one_url(instance_uuid, credential_uuid)
-        response = self.session.put(
-            url, data=json.dumps(credential_data), headers=headers
-        )
+        response = self.session.put(url, json=credential_data, headers=headers)
         if response.status_code != 200:
             self.raise_from_response(response)
         return response.json()
 
     def delete_credential(self, instance_uuid, credential_uuid, tenant_uuid=None):
-        headers = self.ro_headers(tenant_uuid=tenant_uuid)
+        headers = self._get_headers(tenant_uuid=tenant_uuid)
         url = self._credentials_one_url(instance_uuid, credential_uuid)
         response = self.session.delete(url, headers=headers)
         if response.status_code != 204:
@@ -168,13 +155,3 @@ class InstancesCommand(DeploydCommand):
             base_url=self._provider_instances_all_url(provider_uuid),
             instance_uuid=instance_uuid,
         )
-
-
-class TenantAwareInstancesCommand(InstancesCommand):
-    def __init__(self, client, tenant_uuids):
-        super().__init__(client)
-        self._ro_headers = dict(self._ro_headers)
-        self._rw_headers = dict(self._rw_headers)
-        wazo_tenant = ', '.join(tenant_uuids)
-        self._ro_headers['Wazo-Tenant'] = wazo_tenant
-        self._rw_headers['Wazo-Tenant'] = wazo_tenant
