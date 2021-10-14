@@ -116,8 +116,8 @@ class ProvidersCommand(DeploydCommand):
             provider_uuid=provider_uuid,
         )
 
-    def _providers_resources(self, endpoint, provider_uuid, **params):
-        headers = self._get_headers(**params)
+    def _providers_resources(self, endpoint, provider_uuid, tenant_uuid=None, **params):
+        headers = self._get_headers(tenant_uuid=tenant_uuid)
         url = '{base_url}/{endpoint}'.format(
             base_url=self._providers_one_url(provider_uuid), endpoint=endpoint
         )
