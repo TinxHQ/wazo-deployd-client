@@ -5,8 +5,6 @@
 from setuptools import setup
 from setuptools import find_packages
 
-TENANT_MODULE = 'wazo_deployd_client.commands.tenant.plugins'
-
 setup(
     name='wazo_deployd_client',
     version='0.1',
@@ -18,10 +16,9 @@ setup(
     entry_points={
         'wazo_deployd_client.commands': [
             'config = wazo_deployd_client.commands.config:ConfigCommand',
-            f'instances = {TENANT_MODULE}.instances:InstancesCommand',
-            f'providers = {TENANT_MODULE}.providers:ProvidersCommand',
+            'instances = wazo_deployd_client.commands.instances:InstancesCommand',
+            'providers = wazo_deployd_client.commands.providers:ProvidersCommand',
             'status = wazo_deployd_client.commands.status:StatusCommand',
-            'tenant = wazo_deployd_client.commands.tenant:Tenant',
         ],
     },
 )
