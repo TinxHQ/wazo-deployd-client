@@ -21,7 +21,6 @@ setup(
             f'instances = {TENANT_MODULE}.instances:InstancesCommand',
             f'providers = {TENANT_MODULE}.providers:ProvidersCommand',
             'status = wazo_deployd_client.commands.status:StatusCommand',
-            'tenant = wazo_deployd_client.commands.tenant:Tenant',
         ],
     },
 )
