@@ -1,7 +1,6 @@
 # Copyright 2017-2021 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-
 from wazo_lib_rest_client.client import BaseClient
 
 
@@ -17,8 +16,3 @@ class DeploydClient(BaseClient):
             version=version,
             **kwargs,
         )
-
-    # this function replicates the tenant method of the BaseClient
-    # which is overridden by the tenant command
-    def configured_tenant(self):
-        return self._tenant_id or self._default_tenant_id
