@@ -1,11 +1,10 @@
-# Copyright 2017-2021 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2017-2023 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from wazo_deployd_client.command import DeploydCommand
 
 
 class PlatformsSubcommand(DeploydCommand):
-
     resource = 'platforms'
 
     def __init__(self, client, base_url):
@@ -28,7 +27,6 @@ class PlatformsSubcommand(DeploydCommand):
 
 
 class ProvidersCommand(DeploydCommand):
-
     resource = 'providers'
 
     def __init__(self, client):
