@@ -45,7 +45,7 @@ pipeline {
           string(name: 'PACKAGE', value: "${env.JOB_NAME}"),
           string(name: 'VERSION', value: sh(script: 'wazo-version unstable', returnStdout: true).trim()),
           string(name: 'DEBIAN_REPOSITORY', value: 'engine'),
-          string(name: 'DEBIAN_DISTRIBUTION', value: 'wazo-dev-buster'),
+          string(name: 'DEBIAN_DISTRIBUTION', value: 'wazo-dev-bullseye'),
         ]
       }
     }
