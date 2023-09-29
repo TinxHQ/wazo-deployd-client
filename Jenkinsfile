@@ -30,7 +30,7 @@ pipeline {
         }
       }
       steps {
-        sh 'tox -e py37'
+        sh 'tox -e py39'
       }
     }
     stage('Debian build and deploy') {
