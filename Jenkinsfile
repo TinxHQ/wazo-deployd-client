@@ -1,5 +1,9 @@
 pipeline {
   agent any
+  triggers {
+    githubPush()
+    pollSCM('H H * * *')
+  }
   parameters {
       choice(name: 'test', choices: ['yes','no'], description: 'Run all tests ?')
       choice(name: 'build_and_publish', choices: ['yes','no'], description: 'Build and publish assets ?')
