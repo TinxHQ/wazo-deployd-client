@@ -36,7 +36,7 @@ pipeline {
         }
       }
       steps {
-        sh 'tox -e py39'
+        sh 'tox -e py311'
       }
     }
     stage('Debian build and deploy') {
