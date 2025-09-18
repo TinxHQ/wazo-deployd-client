@@ -46,8 +46,9 @@ pipeline {
       steps {
         // This package is uploaded to public repo as a dependency to wazo-nestbox-plugin
         build job: 'build-package', parameters: [
-          string(name: 'PACKAGE', value: "${env.JOB_NAME}"),
+          string(name: 'PACKAGE', value: "wazo-deployd-client"),
           string(name: 'VERSION', value: sh(script: 'wazo-version unstable', returnStdout: true).trim()),
+          string(name: 'BRANCH', value: "bookworm"),
           string(name: 'DEBIAN_REPOSITORY', value: 'engine'),
           string(name: 'DEBIAN_DISTRIBUTION', value: 'wazo-dev-bookworm'),
         ]
