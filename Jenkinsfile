@@ -1,6 +1,6 @@
 pipeline {
   agent {
-    label 'general'
+    label 'general-debian12'
   }
   triggers {
     githubPush()
