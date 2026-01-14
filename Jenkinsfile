@@ -46,7 +46,7 @@ pipeline {
         }
       }
       steps {
-        build job: 'build-package', parameters: [
+        build job: 'build-debian-package', parameters: [
           string(name: 'PACKAGE', value: "${env.JOB_NAME}"),
           string(name: 'VERSION', value: sh(script: 'wazo-version unstable', returnStdout: true).trim()),
           string(name: 'DEBIAN_REPOSITORY', value: 'enterprise'),
