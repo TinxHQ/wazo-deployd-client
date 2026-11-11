@@ -1,4 +1,4 @@
-# Copyright 2017-2023 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2017-2026 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from wazo_deployd_client.command import DeploydCommand
@@ -119,6 +119,35 @@ class InstancesCommand(DeploydCommand):
         if response.status_code != 204:
             self.raise_from_response(response)
 
+    def create_token(
+        self,
+        instance_uuid,
+        credential_uuid,
+        expiration=None,
+        access_type=None,
+        connection=None,
+        tenant_uuid=None,
+    ):
+        """Ask wazo-deployd to authenticate against an instance and return a token.
+
+        The credential's password stays in wazo-deployd, and so does the
+        instance's refresh token: call this again to renew rather than
+        refreshing client-side.
+        """
+        headers = self._get_headers(tenant_uuid=tenant_uuid)
+        url = self._credentials_token_url(instance_uuid, credential_uuid)
+        body = {}
+        if expiration is not None:
+            body['expiration'] = expiration
+        if access_type is not None:
+            body['access_type'] = access_type
+        if connection is not None:
+            body['connection'] = connection
+        response = self.session.post(url, json=body, headers=headers)
+        if response.status_code != 201:
+            self.raise_from_response(response)
+        return response.json()
+
     def _instances_all_url(self):
         return self.base_url
 
@@ -131,6 +160,11 @@ class InstancesCommand(DeploydCommand):
     def _instances_wazo_url(self, instance_uuid):
         return '{base_url}/wazo'.format(
             base_url=self._instances_one_url(instance_uuid),
+        )
+
+    def _credentials_token_url(self, instance_uuid, credential_uuid):
+        return '{base_url}/token'.format(
+            base_url=self._credentials_one_url(instance_uuid, credential_uuid),
         )
 
     def _credentials_one_url(self, instance_uuid, credential_uuid):
