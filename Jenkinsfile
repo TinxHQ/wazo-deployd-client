@@ -5,7 +5,7 @@ def isMaster = env.BRANCH_NAME == 'master'
 
 pipeline {
   agent {
-    label 'general-debian12-small'
+    label 'general-amd64-debian12-small'
   }
   parameters {
       choice(name: 'test', choices: ['yes','no'], description: 'Run all tests ? (Ignored for PR)')
